@@ -1,3 +1,9 @@
+interface ButtonElementProps {
+    text: string,
+    onChangeText: (value: string, op: string) => void
+}
+
+
 const ButtonElement = (props: ButtonElementProps) => {
     return <button
         style={{

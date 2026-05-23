@@ -14,13 +14,16 @@ const Home = () => {
 
     return <div className="home-page">
         <input value={text} type="text" onChange={(event) => setText(event.target.value)} />
-        
-        <ButtonElement text='+' onChangeText={changeText}/>
-        <ButtonElement text='-' onChangeText={changeText}/>
-        
+
+
+
+
         {arrayBtn.map((item, key) => (
             <ButtonElement text={item} onChangeText={changeText} key={key} />
         ))}
+
+        <ButtonElement text='+' onChangeText={changeText} />
+        <ButtonElement text='-' onChangeText={changeText} />
 
         <button>
             -
