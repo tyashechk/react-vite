@@ -19,18 +19,12 @@ const ChessRotate = () => {
             alert('Чисел больше, чем клеток!');
             return;
         }
-
-        // 1. Создаем массив пар: число и его индекс В ОБРАТНОМ ПОРЯДКЕ (от boardSize до 1)
         let pairs: { number: number, index: number }[] = [];
         
-        // Заполняем пары. 
-        // numbers[i] - само число.
-        // boardSize - i - это индекс (если размер 5, то 5, 4, 3, 2, 1)
         numbers.forEach((num, i) => {
             pairs.push({ number: num, index: boardSize - i });
         });
 
-        // 2. СОРТИРУЕМ МАССИВ ПО ЧИСЛАМ ПО ВОЗРАСТАНИЮ (через if/else)
         for (let i = 0; i < pairs.length; i++) {
             for (let j = 0; j < pairs.length - 1; j++) {
                 if (pairs[j].number > pairs[j + 1].number) {
@@ -41,11 +35,8 @@ const ChessRotate = () => {
             }
         }
 
-        // 3. Теперь числа стоят по порядку (1,2,3,4,5), а их индексы перемешались.
-        // Вытаскиваем ТОЛЬКО ИНДЕКСЫ.
         let finalIndexes = pairs.map(pair => pair.index);
 
-        // 4. Выводим результат (слитно, без запятых)
         setResult(finalIndexes.join(''));
     };
 
