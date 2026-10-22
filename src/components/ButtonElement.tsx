@@ -1,21 +1,20 @@
 interface ButtonElementProps {
-    text: string,
-    onChangeText: (value: string, op: string) => void
+    text: string;
+    onChangeText: (value: string) => void;
 }
 
-
-const ButtonElement = (props: ButtonElementProps) => {
-    return <button
+const ButtonElement = ({ text, onChangeText }: ButtonElementProps) => (
+    <button
         style={{
             width: "30px",
-            background: 'red',
-            color: 'white',
-            border: '1px solid aqua'
+            background: 'cyan',
+            color: 'black',
+            border: '1px solid black',
         }}
-        onClick={() => props.onChangeText(props.text, 'a')}
+        onClick={() => onChangeText(text)}
     >
-        {props.text}
+        {text}
     </button>
-}
+);
 
 export default ButtonElement;
