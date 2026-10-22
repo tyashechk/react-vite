@@ -7,6 +7,7 @@ import NotFound from '@/pages/NotFound/NotFound';
 import Calculator from '@pages/Calculator/Calculator';
 import InsertionSort from '@/pages/QuickSort/InsertionSort';
 import QuickSortOri from '@/pages/QuickSort/QuickSortOri';
+import ChessRotate from '@/pages/ChessRotate/ChessRotate';
 
 const AppRouter = () => {
     return <Routes>
@@ -17,6 +18,7 @@ const AppRouter = () => {
             <Route path="calcu" element={<Calculator />} />
             <Route path="sort" element={<InsertionSort />} />
             <Route path="sorti" element={<QuickSortOri />} />
+            <Route path="chess" element={<ChessRotate />} />
         </Route>
     </Routes>
 };
