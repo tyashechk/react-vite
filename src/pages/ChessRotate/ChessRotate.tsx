@@ -2,30 +2,38 @@ import { useState } from 'react';
 import './ChessRotate.scss';
 
 const ChessRotate = () => {
-    const [size, setSize] = useState(5);
-    const [inputText, setInputText] = useState('13452');
-    const [sorted, setSorted] = useState<number[]>([]);
+    const [size, setSize] = useState<string>('');
+    const [inputText, setInputText] = useState<string>('');
+    const [result, setResult] = useState<string>('');
 
     const rotate = () => {
-        let inputArray = inputText.split('').map(Number);
-
-        if (inputArray.length > size) {
-            alert(`Ошибка! Количество чисел (${inputArray.length}) не может быть больше количества клеток (${size}).`);
+        if (!size || !inputText) {
+            alert('Заполните поля!');
             return;
         }
 
-        let indexes = [];
-        for (let i = size; i >= 1; i--) {
-            indexes.push(i);
-        }   
+        const boardSize = Number(size);
+        let numbers = inputText.split('').map(Number);
 
-        let pairs = inputArray.map((num, i) => {
-            return { num: num, idx: indexes[i] };
+        if (numbers.length > boardSize) {
+            alert('Чисел больше, чем клеток!');
+            return;
+        }
+
+        // 1. Создаем массив пар: число и его индекс В ОБРАТНОМ ПОРЯДКЕ (от boardSize до 1)
+        let pairs: { number: number, index: number }[] = [];
+        
+        // Заполняем пары. 
+        // numbers[i] - само число.
+        // boardSize - i - это индекс (если размер 5, то 5, 4, 3, 2, 1)
+        numbers.forEach((num, i) => {
+            pairs.push({ number: num, index: boardSize - i });
         });
 
+        // 2. СОРТИРУЕМ МАССИВ ПО ЧИСЛАМ ПО ВОЗРАСТАНИЮ (через if/else)
         for (let i = 0; i < pairs.length; i++) {
             for (let j = 0; j < pairs.length - 1; j++) {
-                if (pairs[j].num > pairs[j + 1].num) {
+                if (pairs[j].number > pairs[j + 1].number) {
                     let temp = pairs[j];
                     pairs[j] = pairs[j + 1];
                     pairs[j + 1] = temp;
@@ -33,24 +41,24 @@ const ChessRotate = () => {
             }
         }
 
-        let result = [];
-        pairs.forEach(pair => {
-            result[pair.idx - 1] = pair.num; 
-        });
+        // 3. Теперь числа стоят по порядку (1,2,3,4,5), а их индексы перемешались.
+        // Вытаскиваем ТОЛЬКО ИНДЕКСЫ.
+        let finalIndexes = pairs.map(pair => pair.index);
 
-        setSorted(result);
+        // 4. Выводим результат (слитно, без запятых)
+        setResult(finalIndexes.join(''));
     };
 
     return (
         <div className="chess-container">
-            <h1>Поворот коней</h1>
+            <h1>Сортировка с индексами</h1>
             
             <div className="controls">
                 <label>Количество клеток: </label>
                 <input 
                     type="number" 
                     value={size} 
-                    onChange={(e) => setSize(Number(e.target.value))} 
+                    onChange={(e) => setSize(e.target.value)} 
                 />
             </div>
 
@@ -61,7 +69,7 @@ const ChessRotate = () => {
                     value={inputText} 
                     onChange={(e) => {
                         const value = e.target.value;
-                        if (/^[0-9]*$/.test(value) && value.length <= size) {
+                        if (/^[0-9]*$/.test(value) && (size === '' || value.length <= Number(size))) {
                             setInputText(value);
                         }
                     }} 
@@ -69,14 +77,15 @@ const ChessRotate = () => {
             </div>
 
             <button onClick={rotate}>
-                Повернуть
+                Сортировать
             </button>
 
-            <div className="result">
-                <p><strong>Было:</strong> {inputText}</p>
-                {/* Вот здесь мы убрали запятые: join('') вместо join(', ') */}
-                <p><strong>Стало:</strong> {sorted.join('')}</p>
-            </div>
+            {result && (
+                <div className="result">
+                    <p><strong>Было:</strong> {inputText}</p>
+                    <p><strong>Индексы:</strong> {result}</p>
+                </div>
+            )}
         </div>
     );
 };
